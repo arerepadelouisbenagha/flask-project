@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: executing remote ssh commands using ssh key
+    - name: Login to EC2 instance
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        port: ${{ secrets.PORT }}
-        script: whoami
+        host: ${{ env.EC2_INSTANCE_IP }}
+        username: ubuntu
+        private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          echo "Successfully logged in to EC2 instance."
