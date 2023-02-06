@@ -24,11 +24,11 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
-    - name: Deploy to EC2
-      uses: aws-actions/amazon-ec2-instance-actions@v1
+    - name: Restart server
+      uses: appleboy/ssh-action@v2
       with:
-        instance-ids: i-0817534edf70bc3c5
-        run-command: |
-          sudo apt-get update
-          sudo apt-get install -y nginx
-          sudo service nginx start
+        host: ec2-3-94-110-140.compute-1.amazonaws.com
+        username: ubuntu
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          sudo apt update -y
