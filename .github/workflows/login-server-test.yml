@@ -1,0 +1,44 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+
+env:
+  AWS_REGION: us-east-1
+  # EC2_SECURITY_GROUP_ID: sg-0eabd23db1601fd6a
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    # - name: update
+    #   uses: appleboy/ssh-action@v0.1.7
+    #   with:
+    #     host: ec2-3-94-110-140.compute-1.amazonaws.com
+    #     username: ubuntu
+    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #     port: 22
+    #     script: |
+    #       sudo apt update -y
+    - name: Get runner IP
+      id: runner-ip
+      run: |
+        curl https://api.github.com/meta > api-meta.json
+        echo "::set-env name=RUNNER_IP::$(jq -r '.runners[] | select(.os == "ubuntu") | .ip' api-meta.json)"
+        echo $RUNNER
+
