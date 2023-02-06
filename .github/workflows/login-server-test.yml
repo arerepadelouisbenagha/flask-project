@@ -24,8 +24,8 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
-    - name: Restart server
-      uses: appleboy/ssh-action@master
+    - name: update
+      uses: appleboy/ssh-action@v0.1.7
       with:
         host: ec2-3-94-110-140.compute-1.amazonaws.com
         username: ubuntu
