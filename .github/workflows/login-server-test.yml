@@ -18,5 +18,6 @@ jobs:
         username: ubuntu
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
+        debug: true
         script: |
           echo "Successfully logged in to EC2 instance."
