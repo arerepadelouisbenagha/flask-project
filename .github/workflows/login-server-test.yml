@@ -38,4 +38,4 @@ jobs:
       id: latest-runner-ip
       run: |
         curl -s https://api.github.com/meta | jq '.hooks[0]' | awk -F',' '{print $1}' | awk -F'"' '{print $4}' > ip_address.txt
-        echo $4
+        cat ip_address.txt
