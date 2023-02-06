@@ -1,0 +1,34 @@
+name: Docker Image Build and Push
+
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+      
+env:
+  DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+  DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+  DOCKER_IMAGE_NAME: flask-app
+  TAG_NAME: v1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Docker Login
+      uses: docker/login-action@v1
+      with:
+        username: ${{ env.DOCKER_HUB_USERNAME }}
+        password: ${{ env.DOCKER_HUB_PASSWORD }}
+
+    - name: Build the Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: app/
+        push: true
+        tags: elitesolutionsit/flask-app:${{ env.TAG_NAME }}
