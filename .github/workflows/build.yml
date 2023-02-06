@@ -5,12 +5,12 @@ on:
     branches:
       - main
       - feature/*
-
+      
 env:
   DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
   DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-  IMAGE_NAME: flask-app
-  IMAGE_TAG: v1
+  DOCKER_IMAGE_NAME: flask-app
+  GITHUB_SHA: v1
 
 jobs:
   build:
@@ -31,6 +31,4 @@ jobs:
       with:
         context: app/
         push: true
-        tags: "${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}"
-        username: ${{ env.DOCKER_HUB_USERNAME }}
-        password: ${{ env.DOCKER_HUB_PASSWORD }}
+        tags: "${{ env.DOCKER_IMAGE_NAME }}:${{ env.GITHUB_SHA }}"
