@@ -8,6 +8,8 @@ on:
 
 env:
   AWS_REGION: us-east-1
+  EC2_SECURITY_GROUP_ID: sg-0eabd23db1601fd6a
+
 
 jobs:
   deploy:
@@ -37,4 +39,9 @@ jobs:
     - name: Get latest GitHub Actions runner IP
       id: latest-runner-ip
       run: |
-        curl -s https://api.github.com/meta | jq '.hooks[0]' | awk -F',' '{print $1}' | awk -F'"' '{print $4}' > ip_address.txt && cat ip_address.txt
+        curl -s https://api.github.com/meta | jq '.hooks[0]' | awk -F',' '{print $1}' | awk -F'"' '{print $4}' > ip_address.txt
+    
+    - name: Update security group
+      run: |
+        RUNNER_IP=$(cat ip_address.txt)
+        aws ec2 authorize-security-group-ingress --group-id ${{ env.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr $RUNNER_IP/32        
