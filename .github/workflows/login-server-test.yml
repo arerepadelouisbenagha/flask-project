@@ -16,6 +16,6 @@ jobs:
       with:
         host: ${{ env.EC2_INSTANCE_IP }}
         username: ubuntu
-        private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           echo "Successfully logged in to EC2 instance."
