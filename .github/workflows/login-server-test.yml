@@ -17,5 +17,6 @@ jobs:
         host: ${{ env.EC2_INSTANCE_IP }}
         username: ubuntu
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
         script: |
           echo "Successfully logged in to EC2 instance."
