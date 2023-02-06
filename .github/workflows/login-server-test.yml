@@ -25,7 +25,7 @@ jobs:
         aws-region: ${{ env.AWS_REGION }}
 
     - name: Restart server
-      uses: appleboy/ssh-action@v2
+      uses: appleboy/ssh-action@master
       with:
         host: ec2-3-94-110-140.compute-1.amazonaws.com
         username: ubuntu
