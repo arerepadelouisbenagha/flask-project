@@ -1,4 +1,4 @@
-name: remote ssh command
+name: login EC2
 on:
   push:
     branches:
@@ -7,17 +7,18 @@ on:
 jobs:
 
   build:
-    name: Build
+    name: login EC2
     runs-on: ubuntu-latest
     steps:
 
-    - name: Login to EC2 instance
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.EC2_INSTANCE_IP }}
-        username: ubuntu
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22
-        
-        script: |
-          echo "Successfully logged in to EC2 instance."
+      - name: Checkout the code
+        uses: actions/checkout@v1
+
+      - name: Deploy to my EC2 instance
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SOURCE: "./"
+          REMOTE_HOST: "ec2-3-94-110-140.compute-1.amazonaws.com"
+          REMOTE_USER: "ubuntu"
+          TARGET: "/home/ubuntu"
