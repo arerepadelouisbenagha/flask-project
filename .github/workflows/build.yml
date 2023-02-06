@@ -10,7 +10,7 @@ env:
   DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
   DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
   DOCKER_IMAGE_NAME: flask-app
-  GITHUB_SHA: v1
+  TAG_NAME: v1
 
 jobs:
   build:
@@ -26,9 +26,8 @@ jobs:
         username: ${{ env.DOCKER_HUB_USERNAME }}
         password: ${{ env.DOCKER_HUB_PASSWORD }}
 
-    - name: Build Docker Image
+    - name: Build the Docker image
       uses: docker/build-push-action@v2
       with:
         context: app/
-        push: true
-        tags: "${{ env.DOCKER_IMAGE_NAME }}:${{ env.GITHUB_SHA }}"
+        tags: elitesolutionsit/flask-app:${{ env.TAG_NAME }}
