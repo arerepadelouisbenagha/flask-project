@@ -35,16 +35,10 @@ jobs:
     #     port: 22
     #     script: |
     #       sudo apt update -y
-    - name: Get GitHub Actions runner IP
-      id: runner_ip
+    - name: Get runner IP
+      id: runner-ip
       run: |
-        curl -s https://api.github.com/meta | jq -r '.hooks[] | select(contains("actions-runner"))'
+        curl https://api.github.com/meta > api-meta.json
+        echo "::set-env name=RUNNER_IP::$(jq -r '.runners[] | select(.os == "ubuntu") | .ip' api-meta.json)"
+        echo $RUNNER
 
-    - name: Add GitHub Actions runner IP to security group
-      uses: aws-actions/add-rule-to-security-group@v1
-      with:
-        group-id: sg-0eabd23db1601fd6a
-        ip: ${{ steps.runner_ip.output }}
-        port: 22
-        protocol: tcp
-        region: ${{ env.AWS_REGION }}
