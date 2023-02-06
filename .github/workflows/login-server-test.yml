@@ -44,4 +44,4 @@ jobs:
     - name: Update security group
       run: |
         RUNNER_IP=$(cat ip_address.txt)
-        aws ec2 authorize-security-group-ingress --group-id ${{ env.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr $RUNNER_IP/32        
+        aws ec2 authorize-security-group-ingress --group-id ${{ env.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr 0.0.0.0       
