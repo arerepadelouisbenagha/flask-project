@@ -30,4 +30,5 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: app/
+        push: true
         tags: elitesolutionsit/flask-app:${{ env.TAG_NAME }}
