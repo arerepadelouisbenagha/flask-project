@@ -1,24 +1,34 @@
-name: login EC2
+name: Deploy to EC2
+
 on:
   push:
     branches:
       - main
       - feature/*
+
+env:
+  AWS_REGION: us-east-1
+
 jobs:
-
-  build:
-    name: login EC2
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Checkout the code
-        uses: actions/checkout@v1
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
 
-      - name: Deploy to my EC2 instance
-        uses: easingthemes/ssh-deploy@v2.1.5
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SOURCE: "./"
-          REMOTE_HOST: "ec2-3-94-110-140.compute-1.amazonaws.com"
-          REMOTE_USER: "ubuntu"
-          TARGET: "/home/ubuntu"
+    - name: Deploy to EC2
+      uses: aws-actions/amazon-ec2-instance-actions@v1
+      with:
+        instance-ids: i-0817534edf70bc3c5
+        run-command: |
+          sudo apt-get update
+          sudo apt-get install -y nginx
+          sudo service nginx start
