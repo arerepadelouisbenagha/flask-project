@@ -24,11 +24,18 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
-    - name: update
-      uses: appleboy/ssh-action@v0.1.7
-      with:
-        host: ec2-3-94-110-140.compute-1.amazonaws.com
-        username: ubuntu
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          sudo apt update -y
+    # - name: update
+    #   uses: appleboy/ssh-action@v0.1.7
+    #   with:
+    #     host: ec2-3-94-110-140.compute-1.amazonaws.com
+    #     username: ubuntu
+    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #     port: 22
+    #     script: |
+    #       sudo apt update -y
+
+    - name: Get latest GitHub Actions runner IP
+      id: latest-runner-ip
+      run: |
+        curl -s https://api.github.com/meta | jq '.hooks[0]' | awk -F',' '{print $1}' | awk -F'"' '{print $4}' > ip_address.txt
+        echo $4
