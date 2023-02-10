@@ -1,6 +1,6 @@
 ---
 - name: Deploy Flask App
-  hosts: target_server
+  hosts: hosts
   become: yes
 
   tasks:
